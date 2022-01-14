@@ -3,7 +3,7 @@
 <?php
 // We need to use sessions, so you should always start sessions using the below code.
 // If the user is not logged in redirect to the login page...
-session_start();
+include("dbconnect.php");
 if (!isset($_SESSION['username'])) {
 	header('Location: login.php');
 	exit;
@@ -51,23 +51,52 @@ if (!isset($_SESSION['username'])) {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="font-weight: bold;">TASK000021564459</td>
-                    <td>RITM000019418666</td>
-                    <td>CHG000010782114</td>
-                    <td>WCILCHS4MS5605</td>
-                    <td>Yes</td>
-                    <td>Valdet Murtaj</td>
-                    <td><select><optgroup label="Status"><option value="12" selected="">WIP</option><option value="13">Pending</option><option value="14">Closed</option><option value="15">Canceled</option></optgroup></select></td>
-                    <td>Take image</td>
-                    <td>mrahm</td>
-                    <td>78.03.18</td>
-                </tr>
-                <tr></tr>
+                <?php
+                        $data = "SELECT tbltasks.fldTaskNr AS 'TASK_NR'
+                        ,tbltasks.fldRITMNr AS 'RITMNR'
+                        ,tbltasks.fldCHGNr AS 'CHGNR'
+                        ,tblci.fldCI AS 'FLDCI'
+                        ,tblgxp.fldGxP AS 'GXP'
+                        ,tblrequester.fldRequester AS 'REQUESTER'
+                        ,tblstatus.fldStatus AS 'FLD_STATUS'
+                        ,tbltasks.fldDescription AS 'FLD_DESCRIPTION'
+                        ,tblresponsible.fldResponsible AS 'RESPONSIBLE'
+                        ,tbllocation.fldLocation AS 'LOCATION' FROM tbltasks
+                    LEFT JOIN tblCI ON tblci.pkCI = tbltasks.fkCI
+                    LEFT JOIN tblgxp ON tblgxp.pkGxP = tbltasks.fkGxP
+                    LEFT JOIN tblrequester ON tblrequester.pkRequester = tbltasks.fkRequester
+                    LEFT JOIN tblstatus ON tblstatus.pkStatus = tbltasks.fkStatus
+                    LEFT JOIN tblresponsible ON tblresponsible.pkResponsible = tbltasks.fkResponsible
+                    LEFT JOIN tbllocation ON tbllocation.pkLocation = tbltasks.fkLocation";
+                    
+                    foreach ($connection->query($data) as $row) {
+                        if ($row['FLD_STATUS'] == "Closed")
+                        {
+                        echo '<tr>';
+                        echo '<td>'.$row['TASK_NR'].'</td>';
+                        echo '<td>'.$row['RITMNR'].'</td>';
+                        echo '<td>'.$row['CHGNR'].'</td>';
+                        echo '<td>'.$row['FLDCI'].'</td>';
+                        if ($row['GXP'] == 1){
+                            echo '<td>Yes</td>'; 
+                        } else { 
+                            echo '<td>No</td>';
+                        }
+                        echo '<td>'.$row['REQUESTER'].'</td>';
+                        echo '<td>'.$row['FLD_STATUS'].'</td>';
+                        echo '<td>'.$row['FLD_DESCRIPTION'].'</td>';
+                        echo '<td>'.$row['RESPONSIBLE'].'</td>';
+                        echo '<td style="width: 201px;">'.$row['LOCATION'].'</td>';
+                        echo '</tr>';
+                    }
+                    else {}
+                    } 
+
+                    ?>
             </tbody>
         </table>
     </div>
-    <div class="d-xl-flex justify-content-xl-end"><button class="btn btn-primary border rounded border-dark d-xl-flex" type="button" style="margin: 20px;background-color: rgb(0,0,0);color: rgb(255,255,255);font-weight: bold;">Submit</button></div>
+    <!-- <div class="d-xl-flex justify-content-xl-end"><button class="btn btn-primary border rounded border-dark d-xl-flex" type="button" style="margin: 20px;background-color: rgb(0,0,0);color: rgb(255,255,255);font-weight: bold;">Submit</button></div> -->
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

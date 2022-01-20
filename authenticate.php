@@ -7,7 +7,6 @@ include("dbconnect.php");
      } else {
      $username = $_POST['username'];
      $password = $_POST['password']; 
-     $connection = new PDO("mysql:host=".HOST.";dbname=".DATABASE, USER, PASSWORD);
 
      $query = $connection->prepare("SELECT * FROM tbluser WHERE fldusername=:username");
      $query->bindParam(":username", $username, PDO::PARAM_STR);

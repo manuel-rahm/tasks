@@ -24,7 +24,7 @@
             </div>
             <div class="form-group"><input class="form-control" type="username" name="username" placeholder="Username" autofocus=""></div>
             <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color: rgb(0,0,0);" value="login">Log In</button></div><a class="forgot" href="#">Forgot your password?</a></form>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color: rgb(0,0,0);" value="login">Log In</button></div><a class="forgot" href="forgot.php">Forgot your password?</a></form>
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

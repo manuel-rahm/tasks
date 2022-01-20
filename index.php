@@ -31,6 +31,7 @@ if (!isset($_SESSION['username'])) {
                 </div><a href="decommission.php" style="color: rgb(0,0,0);">Decommission</a>
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item" role="presentation"></li>
+                    <p class="greeting" style="margin: auto; margin-right: 20px;">Greetings <?php echo  $_SESSION['username']?></p>
                 </ul><a href="logout.php"><button class="btn btn-primary border rounded border-dark" type="button" style="background-color: rgb(0,0,0);">Log out</button></a></div>
         </div>
     </nav>
@@ -70,10 +71,12 @@ if (!isset($_SESSION['username'])) {
                 LEFT JOIN tbllocation ON tbllocation.pkLocation = tbltasks.fkLocation";
                 
                 foreach ($connection->query($data) as $row) {
-                    if ($row['FLD_STATUS'] != "Closed")
+                    if ($row['FLD_STATUS'] == "WIP" || $row['FLD_STATUS'] == "Pending")
                     {
+                    if ($row['FLD_DESCRIPTION'] != "Decommission"){
+                    if ($row['FLD_DESCRIPTION'] != "decommission"){
                     echo '<tr>';
-                    echo '<td id="RowTaskNr">'.$row['TASK_NR'].'</td>';
+                    echo '<td tasknr="' . $row['TASK_NR'] . '" class="RowTaskNr">'.$row['TASK_NR'].'</td>';
                     echo '<td>'.$row['RITMNR'].'</td>';
                     echo '<td>'.$row['CHGNR'].'</td>';
                     echo '<td>'.$row['FLDCI'].'</td>';
@@ -84,18 +87,17 @@ if (!isset($_SESSION['username'])) {
                     }
                     echo '<td>'.$row['REQUESTER'].'</td>';
                     if ($row['FLD_STATUS'] == "WIP"){
-                        echo '<td><select name="updatestatus"><optgroup label="Status"><option value="1" selected="selected">WIP</option><option value="2">Pending</option><option value="3">Closed</option><option value="4">Canceled</option></optgroup></select></td>';
+                        echo '<form action="update.php" method="POST"><td><select name="updatestatus"><optgroup label="Status"><option value="1" selected="selected">WIP</option><option value="2">Pending</option><option value="3">Closed</option><option value="4">Canceled</option></optgroup></select></td></form>';
                     } elseif ($row['FLD_STATUS'] == "Pending") {
-                        echo '<td><select name="updatestatus" onchange="updateStatus(' . $row['TASK_NR'] . ', \"wip\")"><optgroup label="Status"><option value="1">WIP</option><option value="2" selected="selected">Pending</option><option value="3">Closed</option><option value="4">Canceled</option></optgroup></select></td>';
-                    } elseif ($row['FLD_STATUS'] == "Canceled") {
-                        echo '<td><select name="updatestatus"><optgroup label="Status"><option value="1">WIP</option><option value="2">Pending</option><option value="3">Closed</option><option value="4" selected="selected">Canceled</option></optgroup></select></td>';
-                    }
+                        echo '<form action="update.php" method="POST"><td><select name="updatestatus"><optgroup label="Status"><option value="1">WIP</option><option value="2" selected="selected">Pending</option><option value="3">Closed</option><option value="4">Canceled</option></optgroup></select></td></form>';
+                    } 
                     echo '<td>'.$row['FLD_DESCRIPTION'].'</td>';
                     echo '<td>'.$row['RESPONSIBLE'].'</td>';
                     echo '<td style="width: 201px;">'.$row['LOCATION'].'</td>';
                     echo '</tr>';
                 }
-                else {}
+                }
+                }
                 } 
 
                 ?>
@@ -116,10 +118,11 @@ if (!isset($_SESSION['username'])) {
             </tbody>
         </table>
     </div>
-    <div class="d-xl-flex justify-content-xl-end"><button class="btn btn-primary border rounded border-dark d-xl-flex" type="button" style="margin: 20px;background-color: rgb(0,0,0);color: rgb(255,255,255);font-weight: bold;">Add New Row</button><button class="btn btn-primary border rounded border-dark d-xl-flex"
+    <div class="d-xl-flex justify-content-xl-end"><button class="btn btn-primary border rounded border-dark d-xl-flex"
             type="submit" style="margin: 20px;background-color: rgb(0,0,0);color: rgb(255,255,255);font-weight: bold;">Submit</button>
-            <a href="update.php" style="text-decoration: none;"><button class="btn btn-primary border rounded border-dark d-xl-flex" type="button" style="margin: 20px;background-color: rgb(0,0,0);color: rgb(255,255,255);font-weight: bold;">Update Status</button></a></div>
-    <script src="assets/js/jquery.min.js"></script></form>
+            <a href="update.php" style="text-decoration: none;"><button id="update_button" class="btn btn-primary border rounded border-dark d-xl-flex" type="button" style="margin: 20px;background-color: rgb(0,0,0);color: rgb(255,255,255);font-weight: bold;">Update Status</button></a></div>
+    </form>
+    <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@ if($_POST['inputTask'] == NULL && $_POST['inputRITM'] == NULL) {
         'chgnr' => $_POST['inputCHG'],
         'gxp' => $_POST['inputGxP'],
         'stat' => $_POST['inputStatus'],
-        'descr' => $_POST['inputDescription'],
+        'descr' => "Decommission",
         'responsible' => $_POST['inputResponsible'],
         ];
         $ci = [
@@ -25,7 +25,7 @@ if($_POST['inputTask'] == NULL && $_POST['inputRITM'] == NULL) {
         'requester' => $_POST['inputRequester'],
         ];
         $location = [
-        'loc' => $_POST['inputLocation'],
+        'loc' => "78.03.18",
         ];
                 
         
@@ -57,11 +57,11 @@ if($_POST['inputTask'] == NULL && $_POST['inputRITM'] == NULL) {
                 $stmt6->execute($location);
                 echo '<p class="success">New record created successfully!</p><style>p {font-weight:bold; font-size:20px;}</style>';
                 echo '<script type="text/javascript">setTimeout(function () {
-                        window.location.href = "index.php";}, 2000);</script>';
+                        window.location.href = "decommission.php";}, 2000);</script>';
         } else {
                 echo '<p class="success">New record was not created, please fill in all fields!</p><style>p {font-weight:bold; font-size:20px;}</style>';
                 echo '<script type="text/javascript">setTimeout(function () {
-                       window.location.href = "index.php";}, 2000);</script>';
+                       window.location.href = "decommission.php";}, 2000);</script>';
         }
 
         
